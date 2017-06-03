@@ -7,6 +7,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://get-it-done:beproductiv
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
+
 class Task(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -16,17 +17,28 @@ class Task(db.Model):
         self.name = name
 
 
-
-tasks = []
-
 @app.route('/', methods=['POST', 'GET'])
 def index():
 
     if request.method == 'POST':
-        task = request.form['task']
-        tasks.append(task)
+        task_name = request.form['task']
+        new_task = Task(task_name)
+        db.session.add(new_task)
+        db.session.commit()
 
+    tasks = Task.query.all()
     return render_template('todos.html',title="Get It Done!", tasks=tasks)
+
+
+@app.route('/delete-task', methods=['POST'])
+def delete_task():
+
+    task_id = int(request.form['task-id'])
+    task = Task.query.get(task_id)
+    db.session.delete(task)
+    db.session.commit()
+
+    return redirect('/')
 
 
 if __name__ == '__main__':
