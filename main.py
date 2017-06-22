@@ -75,8 +75,7 @@ def register():
             session['email'] = email
             return redirect('/')
         else:
-            # TODO - user better response messaging
-            return "<h1>Duplicate user</h1>"
+            flash("The email <strong>{0}</strong> is already registered".format(email), 'danger')
 
     return render_template('register.html')
 

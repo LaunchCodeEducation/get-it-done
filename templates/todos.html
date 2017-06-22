@@ -1,40 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
+
     <form method='post'>
-        <label>
-            New Task:
-            <input type="text" name='task' />
-        </label>
-        <input type="submit" value='Add Task' />
+        <div class="form-group">
+            <input class="form-control" type="text" name='task' />
+        </div>
+        <input type="submit" value='Add Task' class="btn btn-default" />
     </form>
 
-    <hr />
+    <h2>Todos</h2>
 
     {% if tasks|length == 0 %}
     <p>No tasks yet</p>
     {% else %}
 
-        <table class="table table-striped">
+        <ul class="list-group">
             {% for task in tasks %}
-            <tr>
-                <td>{{task.name}}</td>
-                <td>
-                    <form method="POST" action="/delete-task" style="display:inline-block;">
-                        <input type="hidden" name="task-id" value="{{task.id}}" />
-                        <button type="submit" class="btn btn-default btn-sm">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Done
-                        </button>
-                    </form>
-                </td> 
-            </tr>
+            <li class="list-group-item">
+                <form method="POST" action="/delete-task" style="display:inline-block;margin-right:10px;">
+                    <input type="hidden" name="task-id" value="{{task.id}}" />
+                    <button type="submit" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </form>
+                {{task.name}}
+            </li>
             {% endfor %}
-        </table>
+        </ul>
 
     {% endif %}
 
-    <hr />
-
+    {% if completed_tasks|length > 0 %}
     <h2>Completed</h2>
 
     <table class="table table-striped">
@@ -43,7 +40,7 @@
         <td><span class="glyphicon glyphicon-ok"></span>{{task.name}}</td>
         </tr>
         {% endfor %}
-
     </table>
+    {% endif %}
 
 {% endblock %}
