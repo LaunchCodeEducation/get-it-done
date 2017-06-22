@@ -1,0 +1,16 @@
+.error {
+    color: red;
+}
+.form-control {
+    width: 400px;
+}
+.navbar-right {
+    padding-right: 20px;
+}
+.glyphicon-ok {
+    margin-right: 10px;
+    color: green;
+}
+.glyphicon-remove {
+    color: red;
+}

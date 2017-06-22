@@ -37,7 +37,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'register']
+    allowed_routes = ['login', 'register', 'static']
     if request.endpoint not in allowed_routes and 'email' not in session:
         return redirect('/login')
 
@@ -50,10 +50,10 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and check_pw_hash(password, user.pw_hash):
             session['email'] = email
-            flash("Logged in")
+            flash("Logged in", 'info')
             return redirect('/')
         else:
-            flash('User password incorrect, or user does not exist', 'error')
+            flash('User password incorrect, or user does not exist', 'danger')
 
     return render_template('login.html')
 
@@ -81,7 +81,7 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     del session['email']
     return redirect('/')

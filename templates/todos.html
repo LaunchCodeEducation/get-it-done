@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Get It Done!</h1>
     <form method='post'>
         <label>
             New Task:
@@ -16,16 +15,21 @@
     <p>No tasks yet</p>
     {% else %}
 
-        <ul>
+        <table class="table table-striped">
             {% for task in tasks %}
-            <li>{{task.name}}
-                <form method="POST" action="/delete-task" style="display:inline-block;">
-                    <input type="hidden" name="task-id" value="{{task.id}}" />
-                    <input type="submit" value="Done!" />
-                </form>
-            </li>
+            <tr>
+                <td>{{task.name}}</td>
+                <td>
+                    <form method="POST" action="/delete-task" style="display:inline-block;">
+                        <input type="hidden" name="task-id" value="{{task.id}}" />
+                        <button type="submit" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Done
+                        </button>
+                    </form>
+                </td> 
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
 
     {% endif %}
 
@@ -33,10 +37,13 @@
 
     <h2>Completed</h2>
 
-    <ul>
+    <table class="table table-striped">
         {% for task in completed_tasks %}
-        <li>{{task.name}}</li>
+        <tr>
+        <td><span class="glyphicon glyphicon-ok"></span>{{task.name}}</td>
+        </tr>
         {% endfor %}
-    </ul>
+
+    </table>
 
 {% endblock %}
